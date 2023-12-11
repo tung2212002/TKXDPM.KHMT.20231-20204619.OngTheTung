@@ -1,16 +1,3 @@
--- BEGIN;
-
--- -- Tạo bảng Media
--- CREATE TABLE aims.Media (
---   id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
---   category VARCHAR(45) NOT NULL,
---   price INTEGER NOT NULL,
---   quantity INTEGER NOT NULL,
---   title VARCHAR(45) NOT NULL,
---   value INTEGER NOT NULL,
---   imageUrl VARCHAR(45) NOT NULL
--- );
-
 DROP DATABASE IF EXISTS aims;
 CREATE DATABASE aims;
 USE aims; 
@@ -22,8 +9,9 @@ CREATE TABLE aims.Media(
   price INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
   title VARCHAR(45) NOT NULL,
-  value INTEGER NOT NULL,
-  imageUrl VARCHAR(45) NOT NULL
+  type VARCHAR(45) NOT NULL,
+  value INT NOT NULL,
+  imageUrl VARCHAR(100) NOT NULL
 );
 CREATE TABLE aims.CD(
   id INTEGER PRIMARY KEY NOT NULL,
@@ -39,7 +27,6 @@ CREATE TABLE aims.Book(
   id INTEGER PRIMARY KEY NOT NULL,
   author VARCHAR(45) NOT NULL,
   coverType VARCHAR(45) NOT NULL,
-  publisher VARCHAR(45) NOT NULL,
   publishDate DATETIME NOT NULL,
   numOfPages INTEGER NOT NULL,
   language VARCHAR(45) NOT NULL,
@@ -59,8 +46,8 @@ CREATE TABLE aims.Card(
   id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
   cardNumber INTEGER NOT NULL,
   cardHolderName VARCHAR(45) NOT NULL,
-  issuingBank VARCHAR(45) NOT NULL,
-  cardSecurityCode INTEGER NOT NULL,
+  issuingBank VARCHAR(45),
+  cardSecurityCode VARCHAR(11) NOT NULL,
   dateExpired DATE NOT NULL
 );
 CREATE TABLE aims.DVD(
@@ -111,7 +98,7 @@ CREATE TABLE aims.Invoice(
 CREATE INDEX aims_Invoice_fk_Invoice_Order1_idx ON Invoice (orderId);
 CREATE TABLE aims.PaymentTransaction(
   id INTEGER NOT NULL,
-  createAt DATETIME NOT NULL,
+  createdAt DATETIME NOT NULL,
   content VARCHAR(45) NOT NULL,
   method VARCHAR(45),
   cardId INTEGER NOT NULL,
