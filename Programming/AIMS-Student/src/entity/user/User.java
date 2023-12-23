@@ -20,10 +20,6 @@ public class User {
         this.phone = phone;
     }
     
-    
-    /** 
-     * @return String
-     */
     // override toString method
     @Override
     public String toString() {
@@ -35,67 +31,35 @@ public class User {
             "}";
     }
 
-    
-    /** 
-     * @return String
-     */
     // getter and setter
     public String getName() {
         return this.name;
     }
 
-    
-    /** 
-     * @param name
-     */
     public void setusername(String name) {
         this.name = name;
     }
 
-    
-    /** 
-     * @return String
-     */
     public String getEmail() {
         return this.email;
     }
 
-    
-    /** 
-     * @param email
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    
-    /** 
-     * @return String
-     */
     public String getAddress() {
         return this.address;
     }
 
-    
-    /** 
-     * @param address
-     */
     public void setAddress(String address) {
         this.address = address;
     }
 
-    
-    /** 
-     * @return String
-     */
     public String getPhone() {
         return this.phone;
     }
 
-    
-    /** 
-     * @param phone
-     */
     public void setPhone(String phone) {
         this.phone = phone;
     }

@@ -1,40 +1,51 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.Test;
 
 import controller.PlaceOrderController;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertEquals;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+public class ValidatePhoneNumberTest {
 
+	public PlaceOrderController placeOrderController;
+	@Before
+	public void setUp() throws Exception {
+		placeOrderController = new PlaceOrderController();
+	}
+	
+	@Test 
+	public void not10CharactersShouldFail() {
+		String phoneFail = "01234567890";
+		assertEquals(placeOrderController.validatePhoneNumber(phoneFail), false);
+		//fail("Not yet implemented");
+	}
+	
+	@Test
+	public void allNotDigitsShouldFail() {
+		String phoneFail = "abcd012345";
+		assertEquals(placeOrderController.validatePhoneNumber(phoneFail), false);
+		//fail("Not yet implemented");
+	}
+	
+	@Test 
+	public void shouldPass() {
+		String phoneFail = "0123456789";
+		assertEquals(placeOrderController.validatePhoneNumber(phoneFail), true);
+		//fail("Not yet implemented");
+	}
+	
+	@Test 
+	public void shouldFail() {
+		String phoneFail = "Quang Bui";
+		assertEquals(placeOrderController.validatePhoneNumber(phoneFail), false);
+		//fail("Not yet implemented");
+	}
+	
+	
+	
+	
+	
 
-class ValidatePhoneNumberTest {
-
-  private PlaceOrderController placeOrderController;
-
-  
-  /** 
-   * @throws Exception
-   */
-  @BeforeEach
-  void setUp() throws Exception {
-    placeOrderController = new PlaceOrderController();
-  }
-
-  
-  /** 
-   * @param phone
-   * @param expected
-   */
-  @ParameterizedTest
-  @CsvSource({ "0123456789,true", "01234,false", "abc123,false", "1234567890,false", })
-
-  public void test(String phone, boolean expected) {
-    // when
-    boolean isValid = placeOrderController.validatePhoneNumber(phone);
-
-    // then
-    assertEquals(expected, isValid);
-  }
 }

@@ -24,18 +24,10 @@ public class BaseScreenHandler extends FXMLScreenHandler {
 		this.stage = new Stage();
 	}
 
-	
-	/** 
-	 * @param prev
-	 */
 	public void setPreviousScreen(BaseScreenHandler prev) {
 		this.prev = prev;
 	}
 
-	
-	/** 
-	 * @return BaseScreenHandler
-	 */
 	public BaseScreenHandler getPreviousScreen() {
 		return this.prev;
 	}
@@ -53,44 +45,30 @@ public class BaseScreenHandler extends FXMLScreenHandler {
 		this.stage.show();
 	}
 
-	
-	/** 
-	 * @param string
-	 */
 	public void setScreenTitle(String string) {
 		this.stage.setTitle(string);
 	}
 
-	
-	/** 
-	 * @param bController
-	 */
 	public void setBController(BaseController bController){
 		this.bController = bController;
 	}
 
-	
-	/** 
-	 * @return BaseController
-	 */
 	public BaseController getBController(){
 		return this.bController;
 	}
 
-	
-	/** 
-	 * @param messages
-	 */
 	public void forward(Hashtable messages) {
 		this.messages = messages;
 	}
 
-	
-	/** 
-	 * @param HomeScreenHandler
-	 */
 	public void setHomeScreenHandler(HomeScreenHandler HomeScreenHandler) {
 		this.homeScreenHandler = HomeScreenHandler;
+	}
+	public void returnToPrevScreen() {
+		getPreviousScreen().show();
+	}
+	public void returnToHomeScreen() {
+		this.homeScreenHandler.show();
 	}
 
 }

@@ -15,26 +15,14 @@ public class Invoice {
         this.order = order;
     }
 
-    
-    /** 
-     * @return Order
-     */
     public Order getOrder() {
         return order;
     }
 
-    
-    /** 
-     * @param amount
-     */
     public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    
-    /** 
-     * @return int
-     */
     public int getAmount() {
         return amount;
     }
