@@ -65,10 +65,6 @@ public class MediaHandler extends FXMLScreenHandler {
 		hboxMedia.setAlignment(Pos.CENTER);
 	}
 	
-	
-	/** 
-	 * @param cartMedia
-	 */
 	public void setCartMedia(CartMedia cartMedia) {
 		this.cartMedia = cartMedia;
 		setMediaInfo();
@@ -93,6 +89,7 @@ public class MediaHandler extends FXMLScreenHandler {
 				LOGGER.info("Deleted " + cartMedia.getMedia().getTitle() + " from the cart");
 			} catch (SQLException exp) {
 				exp.printStackTrace();
+				// control coupling
 				throw new ViewCartException();
 			}
 		});

@@ -10,8 +10,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-// -----------------Coincidental Cohesion--------------
-
 /**
  * @author nguyenlm Contains helper functions
  */
@@ -23,20 +21,10 @@ public class Utils {
 		System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-4s] [%1$tF %1$tT] [%2$-7s] %5$s %n");
 	}
 
-	
-	/** 
-	 * @param className
-	 * @return Logger
-	 */
 	public static Logger getLogger(String className) {
 		return Logger.getLogger(className);
 	}
 
-	
-	/** 
-	 * @param num
-	 * @return String
-	 */
 	public static String getCurrencyFormat(int num) {
 		Locale vietname = new Locale("vi", "VN");
 		NumberFormat defaultFormat = NumberFormat.getCurrencyInstance(vietname);
@@ -66,6 +54,7 @@ public class Utils {
 	public static String md5(String message) {
 		String digest = null;
 		try {
+			//Sequential cohesion: md -> hash -> sb -> digest
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			byte[] hash = md.digest(message.getBytes("UTF-8"));
 			// converting byte array to Hexadecimal String

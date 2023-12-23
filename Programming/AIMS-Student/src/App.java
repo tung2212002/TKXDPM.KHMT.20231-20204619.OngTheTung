@@ -17,10 +17,6 @@ public class App extends Application {
 	@FXML
 	ImageView logo;
 
-	
-	/** 
-	 * @param primaryStage
-	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {

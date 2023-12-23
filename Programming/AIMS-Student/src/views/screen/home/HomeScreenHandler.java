@@ -69,18 +69,10 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         super(stage, screenPath);
     }
 
-    
-    /** 
-     * @return Label
-     */
     public Label getNumMediaCartLabel(){
         return this.numMediaInCart;
     }
 
-    
-    /** 
-     * @return HomeController
-     */
     public HomeController getBController() {
         return (HomeController) super.getBController();
     }
@@ -91,11 +83,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         super.show();
     }
 
-    
-    /** 
-     * @param arg0
-     * @param arg1
-     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         setBController(new HomeController());
@@ -119,6 +106,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         
         cartImage.setOnMouseClicked(e -> {
             CartScreenHandler cartScreen;
+            // control coupling
             try {
                 LOGGER.info("User clicked to view cart");
                 cartScreen = new CartScreenHandler(this.stage, Configs.CART_SCREEN_PATH);
@@ -146,10 +134,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         cartImage.setImage(img2);
     }
 
-    
-    /** 
-     * @param items
-     */
     public void addMediaHome(List items){
         ArrayList mediaItems = (ArrayList)((ArrayList) items).clone();
         hboxMedia.getChildren().forEach(node -> {
@@ -170,12 +154,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         }
     }
 
-    
-    /** 
-     * @param position
-     * @param text
-     * @param menuButton
-     */
     private void addMenuItem(int position, String text, MenuButton menuButton){
         MenuItem menuItem = new MenuItem();
         Label label = new Label();
@@ -192,7 +170,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
             // filter only media with the choosen category
             List filteredItems = new ArrayList<>();
-            
             homeItems.forEach(me -> {
                 MediaHandler media = (MediaHandler) me;
                 if (media.getMedia().getTitle().toLowerCase().startsWith(text.toLowerCase())){

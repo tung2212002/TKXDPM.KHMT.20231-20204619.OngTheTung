@@ -1,37 +1,35 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.Test;
+
 import controller.PlaceOrderController;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+public class ValidateAddressTest {
 
+	public PlaceOrderController placeOrderController;
+	@Before
+	public void setUp() throws Exception {
+		placeOrderController = new PlaceOrderController();
+	}
+	@Test
+	public void nullShouldFail() {
+		String addressFail = "";
+		assertEquals(placeOrderController.validateAddress(addressFail), false);
+	}
 
-class ValidateAddressTest {
+	@Test
+	public void noAlphabeticalShouldFail() {
+		String addressFail = "12 ";
+		assertEquals(placeOrderController.validateAddress(addressFail), false);
+	}
+	
+	@Test 
+	public void shouldPass() {
+		String addressPass = "Cau Giay, Ha Noi";
+		assertEquals(placeOrderController.validateAddress(addressPass), true);
+	}
 
-  private PlaceOrderController placeOrderController;
-
-  
-  /** 
-   * @throws Exception
-   */
-  @BeforeEach
-  void setUp() throws Exception {
-    placeOrderController = new PlaceOrderController();
-  }
-
-  
-  /** 
-   * @param address
-   * @param expected
-   */
-  @ParameterizedTest
-  @CsvSource({ "hanoi,true", "so 15 Hai Ba Trung Hanoi,true", "$# Hanoi,false",
-      "hai ba trung Ha Noi,true", ",false", "    ,false" })
-
-  void test(String address, boolean expected) {
-    boolean isValid = placeOrderController.validateAddress(address);
-    assertEquals(expected, isValid);
-  }
 }

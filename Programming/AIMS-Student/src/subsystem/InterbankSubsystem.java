@@ -3,8 +3,11 @@ package subsystem;
 import common.exception.InternalServerErrorException;
 import common.exception.InvalidCardException;
 import common.exception.NotEnoughBalanceException;
+
+//Violation of DIP: Below imports are all concrete classes
+//Solution: Create interfaces that these classes implement to communicate with them
+//If concrete classes require instantiation, create a factory class and interface with the purpose of creating these objects
 import entity.payment.CreditCard;
-import entity.payment.PaymentCard;
 import entity.payment.PaymentTransaction;
 import subsystem.interbank.InterbankSubsystemController;
 
@@ -32,20 +35,23 @@ public class InterbankSubsystem implements InterbankInterface {
 	}
 
 	/**
-	 * @see InterbankInterface#payOrder(entity.payment.PaymentCard, int,
+	 * @see InterbankInterface#payOrder(entity.payment.CreditCard, int,
 	 *      java.lang.String)
 	 */
-	public PaymentTransaction payOrder(PaymentCard card, int amount, String contents) {
-		PaymentTransaction transaction = ctrl.doTransaction(card, amount, contents, "pay");
+	//Data coupling (CreditCard, int, String)
+	public PaymentTransaction payOrder(CreditCard card, int amount, String contents) {
+		PaymentTransaction transaction = ctrl.payOrder(card, amount, contents);
 		return transaction;
 	}
 
 	/**
-	 * @see InterbankInterface#refund(entity.payment.PaymentCard, int,
+	 * @see InterbankInterface#refund(entity.payment.CreditCard, int,
 	 *      java.lang.String)
 	 */
-	public PaymentTransaction refund(PaymentCard card, int amount, String contents) {
-		PaymentTransaction transaction = ctrl.doTransaction(card, amount, contents, "refund");
+
+	//Data coupling (CreditCard, int, String with ctrl.refund)
+	public PaymentTransaction refund(CreditCard card, int amount, String contents) {
+		PaymentTransaction transaction = ctrl.refund(card, amount, contents);
 		return transaction;
 	}
 }

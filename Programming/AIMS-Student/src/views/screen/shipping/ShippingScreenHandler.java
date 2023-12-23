@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import controller.PlaceOrderController;
-import controller.calculate.CalculateController;
 import common.exception.InvalidDeliveryInfoException;
 import entity.invoice.Invoice;
 import entity.order.Order;
@@ -52,11 +51,6 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		this.order = order;
 	}
 
-	
-	/** 
-	 * @param arg0
-	 * @param arg1
-	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		final BooleanProperty firstTime = new SimpleBooleanProperty(true); // Variable to store the focus on stage load
@@ -69,13 +63,6 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		this.province.getItems().addAll(Configs.PROVINCES);
 	}
 
-	
-	/** 
-	 * @param event
-	 * @throws IOException
-	 * @throws InterruptedException
-	 * @throws SQLException
-	 */
 	@FXML
 	void submitDeliveryInfo(MouseEvent event) throws IOException, InterruptedException, SQLException {
 
@@ -87,16 +74,14 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		messages.put("instructions", instructions.getText());
 		messages.put("province", province.getValue());
 		try {
-			// process and validate delivery info
-			int valid = getBController().processDeliveryInfo(messages);
-			if (valid == 0) return;
+
+			getBController().processDeliveryInfo(messages);
 		} catch (InvalidDeliveryInfoException e) {
 			throw new InvalidDeliveryInfoException(e.getMessage());
 		}
 	
 		// calculate shipping fees
-		CalculateController calController = new CalculateController();
-		int shippingFees = calController.calculateShippingFee(order);
+		int shippingFees = getBController().calculateShippingFee(order);
 		order.setShippingFees(shippingFees);
 		order.setDeliveryInfo(messages);
 		
@@ -110,14 +95,10 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		InvoiceScreenHandler.show();
 	}
 
-	
-	/** 
-	 * @return PlaceOrderController
-	 */
+
 	public PlaceOrderController getBController(){
 		return (PlaceOrderController) super.getBController();
 	}
-
 	public void notifyError(){
 		// TODO: implement later on if we need
 	}

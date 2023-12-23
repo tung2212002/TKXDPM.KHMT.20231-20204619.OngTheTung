@@ -1,39 +1,42 @@
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Before;
+import org.junit.Test;
+
 import controller.PlaceOrderController;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+public class ValidateNameTest {
 
+	public PlaceOrderController placeOrderController;
+	@Before
+	public void setUp() throws Exception {
+		placeOrderController = new PlaceOrderController();
+	}
+	@Test
+	public void nullShouldFail() {
+		String nameFail = "";
+		assertEquals(placeOrderController.validateName(nameFail), false);
+	}
+	@Test
+	public void containsDigitsShouldFail() {
+		String nameFail = "Quang Bui12";
+		assertEquals(placeOrderController.validateName(nameFail), false);
+	}
+	
+	@Test 
+	public void containsNonSpaceSpecialCharacterShouldFail() {
+		String nameFail = "Qu@ng Bui";
+		assertEquals(placeOrderController.validateName(nameFail), false);
+	}
+	@Test
+	public void containsNoAlphaBeticalShouldFail() {
+		String nameFail = "   ";
+		assertEquals(placeOrderController.validateName(nameFail), false);
+	}
+	
+	@Test 
+	public void shouldPass() {
+		String namePass = "Quang Bui";
+		assertEquals(placeOrderController.validateName(namePass), true);
+	}
 
-class ValidateNameTest {
-
-  private PlaceOrderController placeOrderController;
-
-  
-  /** 
-   * @throws Exception
-   */
-  @BeforeEach
-  void setUp() throws Exception {
-    placeOrderController = new PlaceOrderController();
-  }
-
-  
-  /** 
-   * @param name
-   * @param expected
-   */
-  @ParameterizedTest
-  @CsvSource({ "phamquangha,true", "ha1234,false", "#?Ha,false", "Pham Quang Ha,true",
-      "PhamQuangHa,true", ",false", "   ,false" })
-
-  void test(String name, boolean expected) {
-    // when
-    boolean isValid = placeOrderController.validateName(name);
-    // then
-    assertEquals(expected, isValid);
-  }
 }

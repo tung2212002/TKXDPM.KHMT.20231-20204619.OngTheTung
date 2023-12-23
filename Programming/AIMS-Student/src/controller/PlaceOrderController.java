@@ -1,72 +1,128 @@
 package controller;
 
-import entity.cart.Cart;
-import entity.cart.CartMedia;
-
-import entity.invoice.Invoice;
-import entity.order.Order;
-import entity.order.OrderMedia;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import controller.validate.ValidateController;
+import java.util.regex.Pattern;
 
-public class PlaceOrderController extends BaseController {
+import entity.cart.Cart;
+import entity.cart.CartMedia;
+import common.exception.InvalidDeliveryInfoException;
+import entity.invoice.Invoice;
+import entity.order.Order;
+import entity.order.OrderMedia;
+import views.screen.popup.PopupScreen;
 
-  private static Logger LOGGER = utils.Utils.getLogger(PlaceOrderController.class.getName());
+/**
+ * This class controls the flow of place order usecase in our AIMS project
+ * @author nguyenlm
+ */
+public class PlaceOrderController extends BaseController{
 
-  public void placeOrder() throws SQLException {
-    Cart.getCart().checkAvailabilityOfProduct();
+    /**
+     * Just for logging purpose
+     */
+    private static Logger LOGGER = utils.Utils.getLogger(PlaceOrderController.class.getName());
 
-  }
-
-  public Order createOrder() throws SQLException {
-    Order order = new Order();
-    for (Object object : Cart.getCart().getListMedia()) {
-      CartMedia cartMedia = (CartMedia) object;
-      OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity(), cartMedia.getPrice());
-      order.getlstOrderMedia().add(orderMedia);
+    /**
+     * This method checks the avalibility of product when user click PlaceOrder button
+     * @throws SQLException
+     */
+    public void placeOrder() throws SQLException{
+        Cart.getCart().checkAvailabilityOfProduct();
     }
-    return order;
-  }
 
-  public Invoice createInvoice(Order order) {
-    return new Invoice(order);
-  }
-
-  public int processDeliveryInfo(HashMap<String, String> info)
-      throws InterruptedException, IOException {
-    LOGGER.info("Process Delivery Info");
-    LOGGER.info(info.toString());
-    return validateDeliveryInfo(info);
-  }
-
-  public int validateDeliveryInfo(HashMap<String, String> info)
-      throws InterruptedException, IOException {
-    ValidateController valController = new ValidateController();
-
-    if (!valController.validateName(info.get("name"))) {
-      System.out.println("Invalid name!");
-      JOptionPane.showMessageDialog(null, "Invalid name!",
-          "Error", JOptionPane.ERROR_MESSAGE);
-      return 0;
+    /**
+     * This method creates the new Order based on the Cart
+     * @return Order
+     * @throws SQLException
+     */
+    public Order createOrder() throws SQLException{
+        Order order = new Order();
+        for (Object object : Cart.getCart().getListMedia()) {
+            CartMedia cartMedia = (CartMedia) object;
+            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), 
+                                                   cartMedia.getQuantity(), 
+                                                   cartMedia.getPrice());    
+            order.getlstOrderMedia().add(orderMedia);
+        }
+        return order;
     }
-    if (!valController.validatePhoneNumber(info.get("phone"))) {
-      System.out.println("Invalid phone number!");
-      JOptionPane.showMessageDialog(null, "Invalid phone number!",
-          "Error", JOptionPane.ERROR_MESSAGE);
-      return 0;
-    }
-    if (!valController.validateAddress(info.get("address"))) {
-      System.out.println("Invalid address!");
-      JOptionPane.showMessageDialog(null, "Invalid address!",
-          "Error", JOptionPane.ERROR_MESSAGE);
-      return 0;
-    }
-    return 1;
-  }
 
+    /**
+     * This method creates the new Invoice based on order
+     * @param order
+     * @return Invoice
+     */
+    public Invoice createInvoice(Order order) {
+        return new Invoice(order);
+    }
+
+    /**
+     * This method takes responsibility for processing the shipping info from user
+     * @param info
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    public void processDeliveryInfo(HashMap info) throws InterruptedException, IOException{
+        LOGGER.info("Process Delivery Info");
+        LOGGER.info(info.toString());
+        validateDeliveryInfo(info);
+    }
+    
+    /**
+   * The method validates the info
+   * @param info
+   * @throws InterruptedException
+   * @throws IOException
+   */
+    public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
+    	
+    }
+    
+    public boolean validatePhoneNumber(String phoneNumber) {
+    	// TODO: your work
+    	if (phoneNumber.length() != 10) return false;
+    	Pattern pattern = Pattern.compile("([0-9])+");
+    	return pattern.matcher(phoneNumber).matches();
+    	//return true;
+    }
+    
+    public boolean validateName(String name) {
+    	// TODO: your work
+    	if (name.length() == 0) return false;
+    	Pattern pattern = Pattern.compile("^([a-zA-Z]+ ?)+$");
+    	return pattern.matcher(name).matches();
+    }
+    
+    public boolean validateAddress(String address) {
+    	// TODO: your work
+    	if (address.length() == 0) return false;
+    	boolean isAlphabetical = false;
+    	for (int i = 0; i < address.length(); i++) {
+    		if (Character.isAlphabetic(address.charAt(i))) {
+    			isAlphabetical = true;
+    			break;
+    		}
+    	}
+    	if (!isAlphabetical)return false;
+    	return true;
+    }
+    
+
+    /**
+     * This method calculates the shipping fees of order
+     * @param order
+     * @return shippingFee
+     */
+//    Sequential Cohesion
+    public int calculateShippingFee(Order order){
+        Random rand = new Random();
+        int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
+        LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);
+        return fees;
+    }
 }

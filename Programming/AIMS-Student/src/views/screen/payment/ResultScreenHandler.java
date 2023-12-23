@@ -35,11 +35,6 @@ public class ResultScreenHandler extends BaseScreenHandler {
 	@FXML
 	private Label messageLabel;
 
-	
-	/** 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	void confirmPayment(MouseEvent event) throws IOException {
 		homeScreenHandler.show();
